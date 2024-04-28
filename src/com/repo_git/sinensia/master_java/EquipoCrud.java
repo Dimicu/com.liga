@@ -13,7 +13,7 @@ public class EquipoCrud implements CrudBd<Equipo> {
 			+ " VALUES (?,?,?,?,?,?,?,?)";
 	static String sqlRead = "Select * from equipos";
 	static String sqlUpdate = "UPDATE equipos SET posicion=?,puntos=?,victorias=?,empates=?,derrotas=?,goles_favor=?,goles_contra=? WHERE nombre_equipo = ? ";
-	static String sqlDelete = "DELETE equipos WHERE id = ?";
+	static String sqlDelete = "DELETE FROM equipos WHERE nombre_equipo = ?";
 
 	@Override
 	public void create(Equipo equipo) {
@@ -78,16 +78,14 @@ public class EquipoCrud implements CrudBd<Equipo> {
 
 	@Override
 	public void update(int id, String nombre, int... args) {
-		if (args.length != 7) {
-			throw new IllegalArgumentException("Must provide exactly 7 arguments");
-		}
+
 		try (Connection connect = DriverManager.getConnection(url, user, pass);
 				PreparedStatement pstmt = connect.prepareStatement(sqlUpdate)) {
 
 			for (int i = 0; i < args.length; i++) {
 				pstmt.setInt(i + 1, args[i]);
 			}
-			pstmt.setString(8,nombre);
+			pstmt.setString(8, nombre);
 
 			pstmt.executeUpdate();
 
@@ -98,10 +96,19 @@ public class EquipoCrud implements CrudBd<Equipo> {
 	}
 
 	@Override
-	public void delete(Equipo objeto) {
+	public void delete(String nombre) {
+		try (Connection connect = DriverManager.getConnection(url, user, pass);
+				PreparedStatement pstmt = connect.prepareStatement(sqlDelete)) {
+
+			pstmt.setString(1, nombre);
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
-
 	
 
 }

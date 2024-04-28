@@ -10,10 +10,9 @@ public interface CrudBd<T> {
 
 	void read();
 
-
-	void delete(T objeto);
-
 	void update(int id, String nombre, int... args);
+
+	void delete(String nombre);
 
 
 

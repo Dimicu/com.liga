@@ -16,6 +16,7 @@ public class Main {
 
 		equipoCrud.update(82, "Madrid", 0, 0, 0, 0, 0, 0, 0);
 
+		//equipoCrud.delete("Madrid");
 		equipoCrud.read();
 
 		/**
